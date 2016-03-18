@@ -10,12 +10,17 @@ module.exports = EnviroDataList;
 EnviroDataList.prototype = {
     showData: function (req, res) {
         var self = this;
+        var currDate = new Date();
 
+        var hourAgoDate = new Date();
+        hourAgoDate.setHours(hourAgoDate.getHours() - 1);
+        // var checktime = hourAgoDate.getMilliseconds();
+        console.log(hourAgoDate);
         var querySpec = {
-            query: 'SELECT * FROM root r WHERE r.deleted=@deleted',
+            query: 'SELECT * FROM root r WHERE r.sub=@sub',
             parameters: [{
-                name: '@deleted',
-                value: false
+                name: '@sub',
+                value: "test1"
             }]
         };
 
@@ -23,10 +28,23 @@ EnviroDataList.prototype = {
             if (err) {
                 throw (err);
             }
+            // console.log(items);
             console.log("size: "+Object.keys(items).length);
+
+            items.sort(function(a,b) {
+              return b.date - a.date;
+            });
+            for (i = 0; i < Object.keys(items).length; i++) {
+              items[i].lat = items[i].lat/10000;
+              items[i].lng = items[i].lng/10000;
+              var datetime = new Date(items[i].date);
+              items[i].date = datetime.getHours() + ":" + datetime.getMinutes() + ":" + datetime.getSeconds();
+            }
+            var new_items = items.slice(0,50);
+
             res.render('index', {
-                title: 'Real Time Air Quality Data',
-                dataset: items
+                title: 'DC Library Air Quality Data',
+                dataset: new_items
             });
         });
     },
