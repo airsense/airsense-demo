@@ -20,7 +20,7 @@ EnviroDataList.prototype = {
             query: 'SELECT * FROM root r WHERE r.sub=@sub',
             parameters: [{
                 name: '@sub',
-                value: "test1"
+                value: "dc"
             }]
         };
 
