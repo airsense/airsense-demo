@@ -1,0 +1,47 @@
+extends layout
+
+block content
+  h1 #{title}
+  br
+  
+  form(action="/deletedata", method="post")
+    table.table.table-striped.table-bordered
+      tr
+        td Device Name
+        td Device Type
+        td GMT Time
+        td Latitude
+        td Longitude
+        td O3
+        td CO
+        td NO2
+        td PM2.5
+        td PM10
+        td Temperature
+        td Humidity
+        td Battery Voltage
+        td Delete
+      if (typeof dataset === "undefined")
+        tr
+          td
+      else
+        each data in dataset
+          tr
+            td #{data.device_id}
+            td #{data.device_type}
+            td #{data.gmt_time}
+            td #{data.gps_lat}
+            td #{data.gps_long}
+            td #{data.o3_raw}
+            td #{data.co_raw}
+            td #{data.no2_raw}
+            td #{data.pm_small_raw}
+            td #{data.pm_large_raw}
+            td #{data.temp_raw}
+            td #{data.humidity_raw}
+            td #{data.batt_voltage}
+            td
+              input(type="checkbox", name="#{data.id}", value="#{!data.deleted}", checked=data.deleted)
+    button.btn(type="submit") Update dataset
+    br
+  hr
